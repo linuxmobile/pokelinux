@@ -22,5 +22,17 @@
     const POKEBTN = document.querySelector("#pokebtn")
     const POKEURL = "https://pokeapi.co/api/v2/pokemon/"
 
+    let pokemon = JSON.parse(localStorage.getItem("pokemon")) || []
+
+    const SAVETOLOCALSTORAGE = (pokemons) => {
+        return localStorage.setItem("pokemon", JSON.stringify(pokemons))
+    }
+
+    const FETCHPOKEMONS = async () => {
+        const POKEURLID = POKEURL + POKEINPUT.value
+        const RES = await fetch(`${POKEURLID}`)
+        const DATA = await RES.json()
+        return DATA
+    }
 
 </script>
