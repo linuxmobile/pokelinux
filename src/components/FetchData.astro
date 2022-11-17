@@ -30,6 +30,23 @@
         return DATA
     }
 
+    const SHOWEMPTYERR = () => {
+    POKESECTION.innerHTML = `
+      <div class="">
+        <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+        <h2 class="">¡Hola! Necesitas ingresar un número para poder buscar un pokemon.</h2>
+      </div>`
+    }
+
+    const WRONGIDERR = () => {
+      POKESECTION.innerHTML = `
+      <div class="">
+        <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+        <h2 class="">¡No pudimos encontrar este pokemon! :(</h2>
+        <p class="">¡Probá ingresando otro ID!.</p>
+      </div>`
+    }
+
     const RENDERPOKEMON = (pokemon) => {
         const {id, name, sprites, height, weight, types} = pokemon
         return `
@@ -53,11 +70,15 @@
     function init() {
         POKEFORM.addEventListener("submit", async (e) => {
             e.preventDefault()
-
-            if (POKEINPUT.value) {
-                
+            
+            const SEARCHVALUE = POKEINPUT.value
+            if (!SEARCHVALUE) {
+                SHOWEMPTYERR(SEARCHVALUE)
             }
-            let result = await FETCHPOKEMONS()
+            let result = await FETCHPOKEMONS().catch(() => {
+                WRONGIDERR(SEARCHVALUE)
+                return
+            })
             console.log(result)
             pokemon = [result]
             RENDERPOKEMONLIST(result)
