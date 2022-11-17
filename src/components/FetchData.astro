@@ -49,15 +49,21 @@
         POKEFORM.addEventListener("submit", async (e) => {
             e.preventDefault()
 
-            if (POKEINPUT.value <= 0) {
+            if (POKEINPUT.value) {
                 
             }
             let result = await FETCHPOKEMONS()
+            console.log(result)
             pokemon = [result]
             RENDERPOKEMONLIST(result)
-            SAVETOLOCALSTORAGE(pokemon)
+            SAVETOLOCALSTORAGE(result)
         })
     }
 
-    init()
+    const INIT = () => {
+        init()
+        RENDERPOKEMONLIST(pokemon)
+    }
+
+    INIT()
 </script>
