@@ -5,13 +5,9 @@
 <section class="">
     <form id="pokeform">
         <input type="number" name="" id="pokeinput">
-        <button id="pokebtn"></button>
+        <button></button>
     </form>
     <article class="" id="pokesection">
-        <img src="" alt="" class="">
-        <h1 class=""></h1>
-        <p class=""></p>
-        <p class=""></p>
     </article>
 </section>
 
@@ -19,7 +15,6 @@
     const POKESECTION = document.querySelector("#pokesection")
     const POKEINPUT = document.querySelector("#pokeinput")
     const POKEFORM = document.querySelector("#pokeform")
-    const POKEBTN = document.querySelector("#pokebtn")
     const POKEURL = "https://pokeapi.co/api/v2/pokemon/"
 
     let pokemon = JSON.parse(localStorage.getItem("pokemon")) || []
@@ -35,4 +30,34 @@
         return DATA
     }
 
+    const RENDERPOKEMON = (pokemon) => {
+        const {id, name, sprites, height, weight, types} = pokemon
+        return `
+        <h2 class="">#${id}</h2>
+        <img src="${sprites.other.home.front_default}" alt="" class="">
+        <h1 class="">${name.toUpperCase()}</h1>
+        <p class="">${height / 10}m</p>
+        <p class="">${weight / 10}kg</p>
+        `
+    }
+
+    const RENDERPOKEMONLIST = (selectedpokemon) => {
+        POKESECTION.innerHTML = RENDERPOKEMON(selectedpokemon)
+    }
+
+    function init() {
+        POKEFORM.addEventListener("submit", async (e) => {
+            e.preventDefault()
+
+            if (POKEINPUT.value <= 0) {
+                
+            }
+            let result = await FETCHPOKEMONS()
+            pokemon = [result]
+            RENDERPOKEMONLIST(result)
+            SAVETOLOCALSTORAGE(pokemon)
+        })
+    }
+
+    init()
 </script>
