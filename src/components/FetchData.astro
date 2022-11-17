@@ -1,13 +1,18 @@
 ---
 
 ---
-
-<section class="">
+<style>
+textarea:focus, input:focus{
+    outline: none;
+}
+</style>
+<section class="flex w-full h-full items-center justify-center mt-8 flex-col gap-4">
+    <h2 class="font-black uppercase text-4xl">Ingresá un número para buscar un Pokemon</h2>
     <form id="pokeform">
-        <input type="number" name="" id="pokeinput">
-        <button></button>
+        <input type="number" id="pokeinput" class="text-white font-medium rounded-md bg-slate-800 px-6 py-2 relative z-[2] hover:bg-slate-700 transition ease-in-out duration-300 placeholder:text-slate-600" placeholder="Escribe un número aquí!">
     </form>
-    <article class="" id="pokesection">
+    <article class="flex items-center justify-center">
+        <div class="flex items-center justify-center bg-slate-800 rounded-xl px-6 py-4 relative gap-16 hover:bg-slate-800/60 transition ease-in-out duration-300" id="pokesection"></div>
     </article>
 </section>
 
@@ -32,34 +37,37 @@
 
     const SHOWEMPTYERR = () => {
     POKESECTION.innerHTML = `
-      <div class="">
-        <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
-        <h2 class="">¡Hola! Necesitas ingresar un número para poder buscar un pokemon.</h2>
+      <div class="flex items-center justify-center flex-col gap-1">
+        <i class="fa-sharp fa-solid fa-circle-exclamation text-3xl"></i>
+        <h2 class="font-bold text-lg max-w-sm">¡Hola! Necesitas ingresar un número para poder buscar un pokemon.</h2>
       </div>`
     }
 
     const WRONGIDERR = () => {
       POKESECTION.innerHTML = `
-      <div class="">
-        <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
-        <h2 class="">¡No pudimos encontrar este pokemon! :(</h2>
-        <p class="">¡Probá ingresando otro ID!.</p>
+      <div class="flex items-center justify-center flex-col gap-1">
+        <i class="fa-sharp fa-solid fa-circle-exclamation text-3xl"></i>
+        <h2 class="font-bold text-lg max-w-sm">¡No pudimos encontrar este pokemon! :(</h2>
+        <p class="uppercase font-light text-lg">¡Probá ingresando otro ID!</p>
       </div>`
     }
 
     const RENDERPOKEMON = (pokemon) => {
         const {id, name, sprites, height, weight, types} = pokemon
         return `
-        <h2 class="">#${id}</h2>
-        <img src="${sprites.other.home.front_default}" alt="" class="">
-        <h1 class="">${name.toUpperCase()}</h1>
-        <div class="">
-            ${types.map((tipo) => {
-                return `<span class="${tipo.type.name}">${tipo.type.name}</span>`;
-            }).join("")}
+        <h3 class="absolute right-2 font-bold text-[250px] text-slate-700 opacity-30 z-[1]">#${id}</h3>
+        <div class="flex z-[2]">
+            <img src="${sprites.other.home.front_default}" alt="${name} image" class="h-[250px]"></div>
+        <div class="flex flex-col items-center justify-center z-[2] gap-2"> 
+            <h2 class="font-black text-5xl">${name.toUpperCase()}</h2>
+            <div class="flex items-center justify-center gap-2 font-extralight">
+                ${types.map((tipo) => {
+                    return `<span class="${tipo.type.name} bg-slate-700/50 px-2 rounded-md">${tipo.type.name}</span>`;
+                }).join("")}
+            </div>
+            <p class="font-regular text-sm"><strong class="font-bold">Height:</strong> ${height / 10}m</p>
+            <p class="font-regular text-sm"><strong class="font-bold">Weight:</strong> ${weight / 10}kg</p>
         </div>
-        <p class="">${height / 10}m</p>
-        <p class="">${weight / 10}kg</p>
         `
     }
 
@@ -77,9 +85,8 @@
             }
             let result = await FETCHPOKEMONS().catch(() => {
                 WRONGIDERR(SEARCHVALUE)
-                return
+                localStorage.clear()
             })
-            console.log(result)
             pokemon = [result]
             RENDERPOKEMONLIST(result)
             SAVETOLOCALSTORAGE(result)
