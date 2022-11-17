@@ -36,6 +36,11 @@
         <h2 class="">#${id}</h2>
         <img src="${sprites.other.home.front_default}" alt="" class="">
         <h1 class="">${name.toUpperCase()}</h1>
+        <div class="">
+            ${types.map((tipo) => {
+                return `<span class="${tipo.type.name}">${tipo.type.name}</span>`;
+            }).join("")}
+        </div>
         <p class="">${height / 10}m</p>
         <p class="">${weight / 10}kg</p>
         `
